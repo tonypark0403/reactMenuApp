@@ -6,6 +6,8 @@ var ReactRouter = require('react-router');
 var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
 var Navigation = ReactRouter.Navigation;
+
+var History = ReactRouter.History;
 var createBrowserHistory = require('history/lib/createBrowserHistory');
 
 var h = require('./helpers');
@@ -34,7 +36,7 @@ var App = React.createClass({
 */
 var Header = React.createClass({
     render : function() {
-        console.log(this.props);
+        // console.log(this.props);
         return (
             <header className="top">
                 <h1>Catch 
@@ -79,11 +81,25 @@ var Inventory = React.createClass({
 */
 
 var StorePicker = React.createClass({
+    mixins : [History],
+    goToStore : function(event) {
+        event.preventDefault();
+        // console.log('Ya submitted it!')
+        
+        // get the data from the input
+        // in jquery => var storeId = $('input').val()
+        var storeId = this.refs.storeId.value;
+        // console.log(this.refs);
+        
+        //window.location.hash = '# ' + storeId;
+        this.history.pushState(null, '/store/' + storeId);
+        // transition from StorePicker to <App/>
+    },
     render : function() {
         // var name = "Tony";
         // normal comments
         return (
-            <form className="store-selector">
+            <form className="store-selector" onSubmit={this.goToStore}>
                 {/* Comment goes in here! */}
                 {/*<h2>Please Enter A Store {name}</h2>*/}
                 <h2>Please Enter A Store</h2>
